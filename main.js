@@ -19,6 +19,10 @@ app.set('view options', { layout: false });
 app.set('view engine', 'ejs');
 
 
+var Sequence =  require('sequence').Sequence;
+var sequence = Sequence.create();
+
+
 var request = require("request");
 var portMusic = "8000";
 var ipMusic = "192.168.0.12";
@@ -32,14 +36,13 @@ var nombrePlaylist0 = "";
 var nombrePlaylist1 = "";
 var nombrePlaylist2 = "";
 
-var Sequence =  require('sequence').Sequence;
-var sequence = Sequence.create();
-
 var dbNumPlay0 = "9";
 var dbNumPlay1 = "3";
 var dbNumPlay2 = "10";
 
-
+var GLOBAL_modificoPerfil = 0;
+var GLOBAL_usr_habitacion = "";
+var GLOBAL_usr_pass = "";
 
 app.get("/", function (req, res) {
   
@@ -92,7 +95,7 @@ app.post("/registro", function (req, res){
       var regEmail = req.body.email;
       recoveryUserByEmail(regEmail,function (err,content){
           if(err){
-              console.log (err);
+              console.log ("--->Error en registro<----\n"+err);
           }else{
                 if (content !== null){
                 sequence.then(function(next){
@@ -140,8 +143,9 @@ app.post("/registro", function (req, res){
             }else{
                 recoveryAllUsers(function (err,content){
                     var passEncontrada = 0;
+                    var regPass;
                     while (passEncontrada === 0){
-                        var regPass = passwordRandom();
+                        regPass = passwordRandom();
                         for(var i = 0; i < content.length; i++)
                         {
                           if(content[i].password !== regPass)
@@ -256,7 +260,7 @@ app.post("/log", function(req, res) {
                                 checkCero = "checked="+true;
                             }else{
                                 if (parseInt(dBplaylist,10) == parseInt(dbNumPlay1,10)){
-                                    checkUno =  "checked="+true;;
+                                    checkUno =  "checked="+true;
                                 }else{
                                     if (parseInt(dBplaylist,10) == parseInt(dbNumPlay2,10))
                                         checkDos =  "checked="+true;
@@ -269,9 +273,9 @@ app.post("/log", function(req, res) {
                           setTimeout(function(){
                            recoveryAuditoriaNULL(function(err,content){
                                  if (err)
-                                     console.log(err)
+                                     console.log(err);
                                  else{
-                                     if (content != null){                                      
+                                     if (content !== null){                                      
                                          if(dBemail == content[0].email){
                                              inside= "1";
                                           }
@@ -348,7 +352,7 @@ app.post("/log", function(req, res) {
                                 checkCero = "checked="+true;
                             }else{
                                 if (parseInt(dbPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                    checkUno =  "checked="+true;;
+                                    checkUno =  "checked="+true;
                                 }else{
                                     if (parseInt(dbPlaylist,10) == parseInt(dbNumPlay2,10))
                                         checkDos =  "checked="+true;
@@ -361,9 +365,9 @@ app.post("/log", function(req, res) {
                           setTimeout(function(){
                            recoveryAuditoriaNULL(function(err,content){
                                  if (err)
-                                     console.log(err)
+                                     console.log(err);
                                  else{
-                                     if (content != null){                                      
+                                     if (content !== null){                                      
                                          if(dBemail == content[0].email){
                                              inside= "1";
                                           }
@@ -453,7 +457,7 @@ app.post("/historico",function(req,res){
     var inside="0";
     recoveryAllUsers(function(err,content){
         if (err)
-            console.log(err)
+            console.log(err);
         else{
             var dataObject = [];
             for (var i=0; i < content.length; i++){
@@ -461,14 +465,14 @@ app.post("/historico",function(req,res){
             }
             recoveryAllAuditoria(function(err,content){
                 if (err)
-                    console.log(err)
+                    console.log(err);
                 else{
                     var dataObjectAud = [];
                     var dataObjectAudHistorico = [];
                     var usuarioActual="No hay usuarios en la habitacion";
                     for (var i=0; i < content.length; i++){  
                         //Historicos
-                        if(content[i].fechaSalida != null){
+                        if(content[i].fechaSalida !== null){
                             dataObjectAudHistorico.push({email:content[i].email
                               ,fechaEntrada:content[i].fechaEntrada,
                               fechaSalida:content[i].fechaSalida});  
@@ -537,7 +541,7 @@ app.post("/perfil",function(req,res){
                                 checkCero = "checked="+true;
                             }else{
                                 if (parseInt(dbPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                    checkUno =  "checked="+true;;
+                                    checkUno =  "checked="+true;
                                 }else{
                                     if (parseInt(dbPlaylist,10) == parseInt(dbNumPlay2,10))
                                         checkDos =  "checked="+true;
@@ -550,9 +554,9 @@ app.post("/perfil",function(req,res){
                           setTimeout(function(){
                            recoveryAuditoriaNULL(function(err,content){
                                  if (err)
-                                     console.log(err)
+                                     console.log(err);
                                  else{
-                                     if (content != null){                                      
+                                     if (content !== null){                                      
                                          if(dBemail == content[0].email){
                                              inside= "1";
                                           }
@@ -612,17 +616,22 @@ app.post("/modPerfil",function (req,res){
       var regPass = req.body.pass; 
       var regDNI = req.body.userDNI;
       var regPlaylist = req.body.playlist;
-      console.log (regPass);    
+      console.log ("Password del registro: "+regPass);
+      console.log(regEmail+"|"+regNombre+"|"+regApellido+"|"+regTemp+"|"+regLuz+"|"+regPass+"|"+regDNI+"|"+regPlaylist+"|");
       recoveryUserByPass(regPass,function (err,content){         
           if (err){
-             console.log (err);            
+             console.log ("----->Recovery User By Pass --- Modificar Perfil<------"+err);            
           }else{
             var dBid = content[0].id; //Como recupero por clave, siempre hace referencia al usuario que esta modificando el perfil
             var dBplaylist = content[0].idPlaylist;
+            var dBemail = content[0].email;
+            //Si es el administrador
             if (regPass === claveAdmin){
-                if (regEmail === content[0].email){ //Quiere decir que el administrador no cambio el email
-                    
+                if (regEmail === dBemail){ //Quiere decir que el administrador no cambio el email      
                     updateUserDataBase(regNombre,regApellido,regEmail,regTemp,regLuz,dBid,regPlaylist);
+                    //es para saber si es el usuario registrado
+                    if (GLOBAL_usr_habitacion === regEmail)
+                        GLOBAL_modificoPerfil = 1;
                      sequence.then(function(next){
                         setTimeout(function(){
                             request(dirMusic+"damePlaylist?num="+dbNumPlay0, function(error, response, body) {
@@ -652,7 +661,7 @@ app.post("/modPerfil",function (req,res){
                                 checkCero = "checked="+true;
                             }else{
                                 if (parseInt(regPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                    checkUno =  "checked="+true;;
+                                    checkUno =  "checked="+true;
                                 }else{
                                     if (parseInt(regPlaylist,10) == parseInt(dbNumPlay2,10))
                                         checkDos =  "checked="+true;
@@ -665,9 +674,9 @@ app.post("/modPerfil",function (req,res){
                           setTimeout(function(){
                            recoveryAuditoriaNULL(function(err,content){
                                  if (err)
-                                     console.log(err)
+                                     console.log(err);
                                  else{
-                                     if (content != null){                                      
+                                     if (content !== null){                                      
                                          if(regEmail == content[0].email){
                                              inside= "1";
                                              if (dBplaylist != regPlaylist){
@@ -711,10 +720,16 @@ app.post("/modPerfil",function (req,res){
                 }else{
                     recoveryUserByEmail(regEmail,function(err,contentEmail){
                         if (err){
-                            console.log(err);
+                            console.log ("----->Recovery User By Email --- Modificar Perfil<------"+err);            
                         }else{
                             if (content === null){ // no hay nadie con ese email
                                 updateUserDataBase(regNombre,regApellido,regEmail,regTemp,regLuz,dBid,regPlaylist);
+                                //Usuario registrado y como cambio el mail
+                                //se le asigna el nuevo email
+                                if (GLOBAL_usr_habitacion === dBemail){
+                                    GLOBAL_modificoPerfil = 1;
+                                     GLOBAL_usr_habitacion = regEmail;
+                                 }
                                 sequence.then(function(next){
                                 setTimeout(function(){
                                     request(dirMusic+"damePlaylist?num="+dbNumPlay0, function(error, response, body) {
@@ -744,7 +759,7 @@ app.post("/modPerfil",function (req,res){
                                                 checkCero = "checked="+true;
                                             }else{
                                                 if (parseInt(regPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                                    checkUno =  "checked="+true;;
+                                                    checkUno =  "checked="+true;
                                                 }else{
                                                     if (parseInt(regPlaylist,10) == parseInt(dbNumPlay2,10))
                                                         checkDos =  "checked="+true;
@@ -757,9 +772,9 @@ app.post("/modPerfil",function (req,res){
                                           setTimeout(function(){
                                            recoveryAuditoriaNULL(function(err,content){
                                                  if (err)
-                                                     console.log(err)
+                                                    console.log ("----->Recovery Auditoria NULL --- Modificar Perfil<------"+err);            
                                                  else{
-                                                     if (content != null){                                      
+                                                     if (content !== null){                                      
                                                          if(regEmail == content[0].email){
                                                              inside= "1";
                                                              if (dBplaylist != regPlaylist){
@@ -802,12 +817,12 @@ app.post("/modPerfil",function (req,res){
  });     //render administrador
                 
                             }else{ //NO CAMBIO NINGUN CAMPO
-                                var dBemail = content[0].email;  
+                                dBemail = content[0].email;  
                                 var dBnombre = content[0].nombre;
                                 var dBapellido = content[0].apellido;
                                 var dBtemp = content[0].temp;
                                 var dBluz = content[0].luz;
-                                
+
                                 
                                 sequence.then(function(next){
                                 setTimeout(function(){
@@ -838,7 +853,7 @@ app.post("/modPerfil",function (req,res){
                                         checkCero = "checked="+true;
                                     }else{
                                         if (parseInt(regPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                            checkUno =  "checked="+true;;
+                                            checkUno =  "checked="+true;
                                         }else{
                                             if (parseInt(regPlaylist,10) == parseInt(dbNumPlay2,10))
                                                 checkDos =  "checked="+true;
@@ -851,9 +866,9 @@ app.post("/modPerfil",function (req,res){
                                   setTimeout(function(){
                                    recoveryAuditoriaNULL(function(err,content){
                                          if (err)
-                                             console.log(err)
+                                             console.log(err);
                                          else{
-                                             if (content != null){                                      
+                                             if (content !== null){                                      
                                                  if(dBemail == content[0].email){
                                                      inside= "1";
                                                      if (dBplaylist != regPlaylist){
@@ -897,9 +912,14 @@ app.post("/modPerfil",function (req,res){
                         }                   
                     });
                 }
-            }else{
-                if (regEmail === content[0].email){ //Quiere decir que el usuario no cambio el email
-                    updateUserDataBase(regNombre,regApellido,regEmail,regTemp,regLuz,dBid,regPlaylist);                  
+            }
+            //Es un usuario
+            else{
+                if (regEmail === dBemail){ //Quiere decir que el usuario no cambio el email
+                    updateUserDataBase(regNombre,regApellido,regEmail,regTemp,regLuz,dBid,regPlaylist);   
+                     //es para saber si es el usuario registrado
+                    if (GLOBAL_usr_habitacion === regEmail)
+                        GLOBAL_modificoPerfil = 1;                        
                     sequence.then(function(next){
                                 setTimeout(function(){
                                     request(dirMusic+"damePlaylist?num="+dbNumPlay0, function(error, response, body) {
@@ -929,7 +949,7 @@ app.post("/modPerfil",function (req,res){
                                 checkCero = "checked="+true;
                             }else{
                                 if (parseInt(regPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                    checkUno =  "checked="+true;;
+                                    checkUno =  "checked="+true;
                                 }else{
                                     if (parseInt(regPlaylist,10) == parseInt(dbNumPlay2,10))
                                         checkDos =  "checked="+true;
@@ -942,9 +962,9 @@ app.post("/modPerfil",function (req,res){
                                   setTimeout(function(){
                                    recoveryAuditoriaNULL(function(err,content){
                                          if (err)
-                                             console.log(err)
+                                             console.log(err);
                                          else{
-                                             if (content != null){                                      
+                                             if (content !== null){                                      
                                                  if(regEmail == content[0].email){
                                                      inside= "1";
                                                      if (dBplaylist != regPlaylist){
@@ -959,6 +979,9 @@ app.post("/modPerfil",function (req,res){
                             })          //inside
                     .then(function(next){
                         setTimeout(function(){
+                            //es para saber si es el usuario registrado
+                            if (GLOBAL_usr_habitacion === regEmail)
+                                modificoPerfil = 1;
                             res.render(appDir + '/perfilUsuario.ejs', {  userName:regNombre,
                                                                          userSurname:regApellido,
                                                                          userDNI:regDNI,
@@ -988,11 +1011,18 @@ app.post("/modPerfil",function (req,res){
                     
                     
                 }else{
-                    recoveryUserByEmail(regEmail,function(err,contentEmail){
+                    console.log("1013 - >email a verificar: "+regEmail);
+                    recoveryUserByEmail(regEmail,function(err,content){
                         if (err){
                             console.log(err);
                         }else{
                             if (content === null){ // no hay nadie con ese email
+                                console.log("1019 -> no hay nadie con el email: "+regEmail);
+                                //es para saber si es el usuario registrado
+                                if (GLOBAL_usr_habitacion === dBemail){
+                                    GLOBAL_modificoPerfil = 1;
+                                    GLOBAL_usr_habitacion = regEmail;
+                                }
                                 updateUserDataBase(regNombre,regApellido,regEmail,regTemp,regLuz,dBid,regPlaylist);
                                 sequence.then(function(next){
                                 setTimeout(function(){
@@ -1023,7 +1053,7 @@ app.post("/modPerfil",function (req,res){
                                 checkCero = "checked="+true;
                             }else{
                                 if (parseInt(regPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                    checkUno =  "checked="+true;;
+                                    checkUno =  "checked="+true;
                                 }else{
                                     if (parseInt(regPlaylist,10) == parseInt(dbNumPlay2,10))
                                         checkDos =  "checked="+true;
@@ -1036,9 +1066,9 @@ app.post("/modPerfil",function (req,res){
                                   setTimeout(function(){
                                    recoveryAuditoriaNULL(function(err,content){
                                          if (err)
-                                             console.log(err)
+                                             console.log(err);
                                          else{
-                                             if (content != null){                                      
+                                             if (content !== null){                                      
                                                  if(regEmail == content[0].email){
                                                      inside= "1";
                                                      if (dBplaylist != regPlaylist){
@@ -1080,8 +1110,8 @@ app.post("/modPerfil",function (req,res){
 
                     });         //render del usuario
                             }else{ //NO CAMBIO NINGUN CAMPO
-                                
-                                var dBemail = content[0].email;  
+                                console.log("1112 -> RegEmail: "+regEmail);
+                                dBemail = content[0].email;  
                                 var dBnombre = content[0].nombre;
                                 var dBapellido = content[0].apellido;
                                 var dBtemp = content[0].temp;
@@ -1116,7 +1146,7 @@ app.post("/modPerfil",function (req,res){
                                             checkCero = "checked="+true;
                                         }else{
                                             if (parseInt(regPlaylist,10) == parseInt(dbNumPlay1,10)){
-                                                checkUno =  "checked="+true;;
+                                                checkUno =  "checked="+true;
                                             }else{
                                                 if (parseInt(regPlaylist,10) == parseInt(dbNumPlay2,10))
                                                     checkDos =  "checked="+true;
@@ -1129,9 +1159,9 @@ app.post("/modPerfil",function (req,res){
                                   setTimeout(function(){
                                    recoveryAuditoriaNULL(function(err,content){
                                          if (err)
-                                             console.log(err)
+                                             console.log(err);
                                          else{
-                                             if (content != null){                                      
+                                             if (content !== null){                                      
                                                  if(dBemail == content[0].email){
                                                      inside= "1";
                                                      if (dBplaylist != regPlaylist){
@@ -1252,63 +1282,40 @@ app.post("/cerrarSesion",function (req,res){
                     });
 });
 
+
+
+
 app.post("/musicSiguiente",function(req,res){
-    recoveryAuditoriaNULL(function(err,content){
-        if (err)
-            console.log(err)
-        else{
-            if (content != null){
-                    console.log("cambio siguiente");    
-                request(dirMusic+"changeMusicNext", function(error, response, body) {
-                });
-            }
-        }
-    });
+    if (GLOBAL_usr_habitacion !== ""){
+        request(dirMusic+"changeMusicNext", function(error, response, body) {
+        });
+    }
+   
     res.end();
 });
 
 app.post("/musicAnterior",function(req,res){
-    recoveryAuditoriaNULL(function(err,content){
-        if (err)
-            console.log(err)
-        else{
-            if (content != null){
-                    console.log('cambio anterior ');
-                    request(dirMusic+"changeMusicBack", function(error, response, body) {
+    if (GLOBAL_usr_habitacion !== ""){
+       request(dirMusic+"changeMusicBack", function(error, response, body) {
                     });
-            }
-        }
-    });
+    }
     res.end();
 });
 
 app.post("/musicPause",function(req,res){                        
-    recoveryAuditoriaNULL(function(err,content){
-        if (err)
-            console.log(err)
-        else{
-            if (content != null){
-                    console.log('pause music');
-                    request(dirMusic+"pauseMusic", function(error, response, body) {
+    if (GLOBAL_usr_habitacion !== ""){
+       request(dirMusic+"pauseMusic", function(error, response, body) {
                     });
-            }
-        }
-    });
+    }
     res.end();
 });
 
 app.post("/resumeMusic",function(req,res){
-    recoveryAuditoriaNULL(function(err,content){
-        if (err)
-            console.log(err)
-        else{
-            if (content != null){
-                    console.log('resume music');
-                    request(dirMusic+"resumeMusic", function(error, response, body) {
+     if (GLOBAL_usr_habitacion !== ""){
+       request(dirMusic+"resumeMusic", function(error, response, body) {
                     });
-            }
-        }
-    });
+    }
+    
     res.end();
 });
 app.post("/infoSong",function(req,res){
@@ -1321,8 +1328,6 @@ app.post("/infoSong",function(req,res){
             }else{
                 res.end(body);    
             }
-            
-            
     });
 });
 
@@ -1342,7 +1347,7 @@ app.listen(port, function() {
 /*---------------------------Variables y funciones para la Base de Datos--------------*/
 
 
-var ipDataBase = '192.168.0.12'; 	// ip de la base de datos
+var ipDataBase = '192.168.0.12';// ip de la base de datos
 var usrDataBase = 'milton';         // nombre de usuario
 var passDataBase = 'milton';        // contrasena
 var nameDataBase = 'tp2';           // nombre de la base de datos
@@ -1421,7 +1426,7 @@ function recoveryAllUsers(callback){
               if (rows.length > 0)
                 return callback(null, rows);
               else
-                return callback (null,null)
+                return callback (null,null);
           }else{
               return callback (err,null);
           }
@@ -1461,7 +1466,7 @@ function recoveryUser(email,pass,callback){
               if (rows.length > 0)
                 return callback(null, rows);
               else
-                return callback (null,null)
+                return callback (null,null);
           }else{
               return callback (err,null);
           }
@@ -1501,7 +1506,7 @@ function recoveryUserByEmail (email,callback){
               if (rows.length > 0)
                 return callback(null, rows);
               else
-                return callback (null,null)
+                return callback (null,null);
           }else{
               return callback (err,null);
           }
@@ -1526,7 +1531,7 @@ function recoveryUserByPass (pass,callback){
               if (rows.length > 0)
                 return callback(null, rows);
               else
-                return callback (null,null)
+                return callback (null,null);
           }else{
               return callback (err,null);
           }
@@ -1617,14 +1622,14 @@ function recoveryAuditoriaNULL(callback){
               if (rows.length > 0)
                 return callback(null, rows);
               else
-                return callback (null,null)
+                return callback (null,null);
           }else{
               return callback (err,null);
           }
         connection.end();
     });
     
-};
+}
 
 function recoveryAllAuditoria (callback){
     var mysql      = require('mysql');
@@ -1643,7 +1648,7 @@ function recoveryAllAuditoria (callback){
               if (rows.length > 0)
                 return callback(null, rows);
               else
-                return callback (null,null)
+                return callback (null,null);
           }else{
               return callback (err,null);
           }
@@ -1708,7 +1713,7 @@ function sendEmail(email,nombre,pass){
        to:      nombre+" "+email,
        //cc:      "else <else@your-email.com>",
        subject: "Clave de acceso - Galileo"
-    }, function(err, message) { if (err!=null) console.log(err); });
+    }, function(err, message) { if (err!==null) console.log(err); });
 }
 
 /*
@@ -1764,13 +1769,17 @@ function fechaHoyConHora(){
     var hoy = new Date();
     var dd = hoy.getDate();
     var mm = hoy.getMonth()+1; //Enero es el mes 0
-    var yy = hoy.getFullYear();
+    var yy = hoy.getFullYear().toString();
     var hh = hoy.getHours();
     var min = hoy.getMinutes();
-        if (parseInt(min,10) < 10){
+    if (parseInt(min,10) < 10){
         min = '0'+min;
     }
-    return hh+":"+min+" - "+dd+"/"+mm+"/"+yy;
+    if (parseInt(dd,10) < 10){
+        dd = '0'+dd;
+    }
+    var yy_2_digitos = yy[2]+yy[3];
+    return hh+":"+min+" - "+dd+"/"+mm+"/"+yy_2_digitos;
 }
 
 var mraa = require("mraa");
@@ -1780,26 +1789,14 @@ function tempActual (){
 
     var myAnalogPin = new mraa.Aio(0);
     var a = myAnalogPin.read();
-     var resistance = (1023 - a) * 10000 / a; //get the resistance of the sensor;
-    //console.log("Resistance: "+resistance);
+    var resistance = (1023 - a) * 10000 / a; //get the resistance of the sensor;
     var celsius_temperature = 1 / (Math.log(resistance / 10000) / B + 1 / 298.15) - 273.15;//convert to temperature via datasheet ;
     
-    var int_celsius = Math.floor( celsius_temperature );
-
+    var int_celsius;
+    int_celsius = Math.floor( celsius_temperature );
+    //console.log("Temp Actual: "+int_celsius);
     return int_celsius;
-        
-   /* var text = "";
-    var possible = "0123456789";
-    var tempEncontrada = 0;
-    while (tempEncontrada === 0){ 
-        for( var i=0; i < 2; i++ )
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        if ((parseInt(text,10) < 30)&&(parseInt(text,10) > 18))
-            tempEncontrada = 1;
-        else
-            text = "";
-    }
-    return text;*/
+
 }
 
 var lcd = require("jsupm_i2clcd");
@@ -1842,6 +1839,19 @@ fs = require('fs');
 var hayUnoAdentro = 0;
 var intervalSensores;
 
+//pin 2 para encender el Cooler
+var pinCooler = new mraa.Gpio(2); 
+const abierto = 0;
+const cerrado = 1;
+pinCooler.write(abierto);
+
+// Load Grove module
+var groveSensor = require('jsupm_grove');
+
+// Create the relay switch object using GPIO pin 0
+var relayCalefaccion = new groveSensor.GroveRelay(4);
+relayCalefaccion.off();
+
 var pwm = new mraa.Pwm(3);
 pwm.write(0.0);
 pwm.enable(false);
@@ -1864,65 +1874,51 @@ setInterval(function(){
                     console.log(err);
             });
             
-            
-            recoveryUserByPass(pass,function(err,content){
-                if (err)
-                    console.log(err);
-                else{
-                    if (content !== null){                    
-                        var dBusr = content[0].email;
-                        var registrado = 0;
-                        var dBtemp = content[0].temp;
-                        var dBluz = content[0].luz;
-                        var dbApellido = content[0].apellido;
-                         var dbIdPlaylist = content[0].idPlaylist;
-                        recoveryAllAuditoria(function(err,content){
-                            for (var i = 0; i < content.length ; i++){
-                                if ((content[i].fechaSalida === null)&&(content[i].email === dBusr)){
-                                    updateAuditoriaDataBase(content[i].email);
-                                    registrado = 1;
-                                    break;
-                                }
-                            }
-                            if (registrado === 0){
-                                if (hayUnoAdentro === 0){
-                                    saveAuditoriaDataBase(dBusr);
-                                    hayUnoAdentro = 1;                              
-                                    cleanLCD();
-                                    //writeLCD("Bienvenido",0,0);
-                                    //writeLCD(dbApellido,1,0);
-                                    mensajeLCDconDelay("Bienvenido",dbApellido);
-                                    request(dirMusic+"musicOn?num="+dbIdPlaylist, function(error, response, body) {
-                                    
-                                    });
-                                    simuladorSensores(pass);
-                                }else{
-                                    cleanLCD();
-                                    //writeLCD("---Habitacion---",0,0);
-                                    //writeLCD("----Ocupada---->",1,0);
-                                    mensajeLCDconDelay("---Habitacion---","----Ocupada---->");
-                                }
-                            }
-                            else{
-                                hayUnoAdentro = 0;
-                                clearInterval(intervalSensores);
-                                pwm.write(0.0);
-                                pwm.enable(false);
-                                cleanLCD();
-                                //writeLCD("Hasta Prontos",0,0);
-                                //writeLCD(fechaHoyConHora(),1,0);
-                                request(dirMusic+"musicOff", function(error, response, body) {});
-                                mensajeLCDconDelay("Hasta Prontos",fechaHoyConHora());
-                            }                                                
-                        });                    
-                    }else{
-                        cleanLCD();
-                        //writeLCD("Error Password",0,0);
-                        //writeLCD("Intente de nuevo",1,0);
-                        mensajeLCDconDelay("Error Password","Intente de nuevo");
-                    }
+            //Si hay una persona adentro y se quiere ir
+            if (pass === GLOBAL_usr_pass){
+                updateAuditoriaDataBase(GLOBAL_usr_habitacion);
+                hayUnoAdentro = 0;
+                clearInterval(intervalSensores);
+                pwm.write(0.0);
+                pwm.enable(false);
+                cleanLCD();
+                pinCooler.write(abierto);
+                relayCalefaccion.off();
+                GLOBAL_usr_habitacion = "";
+                GLOBAL_usr_pass = "";
+                request(dirMusic+"musicOff", function(error, response, body) {});
+                mensajeLCDconDelay("Hasta Prontos",fechaHoyConHora());
+            }else{
+                //quiere decir que no hay nadie
+                if ((GLOBAL_usr_pass === "")&&(pass.length > 0)){
+                    recoveryUserByPass(pass,function(err,content){
+                        if (content !== null){                    
+                            //usuario existente
+                             var dBusr = content[0].email;
+                             var dbApellido = content[0].apellido;
+                             var dbIdPlaylist = content[0].idPlaylist;
+                             saveAuditoriaDataBase(dBusr);
+                             hayUnoAdentro = 1;                              
+                             cleanLCD();
+                             GLOBAL_usr_habitacion = dBusr;
+                             GLOBAL_usr_pass = pass;
+                             mensajeLCDconDelay("Bienvenido",dbApellido);
+                             request(dirMusic+"musicOn?num="+dbIdPlaylist, function(error, response, body) {});
+                             simuladorSensores(pass);
+                        }else{
+                            //error de password
+                            cleanLCD();
+                            mensajeLCDconDelay("Error Password","Intente de nuevo");
+                        }
+                    });
+                }else{//este usuario no es el actual, habitacion ocupada
+                    cleanLCD();
+                    mensajeLCDconDelay("---Habitacion---","----Ocupada---->");
                 }
-            });
+            }
+        
+        
+        
       }else{
         if (puedoEscribir == 1){
             cleanLCD();
@@ -1933,7 +1929,6 @@ setInterval(function(){
             }
             writeLCD("Pass: "+data_sin_espacio,1,0);
             }
-        
         }  
   }
 })},200);
@@ -1950,13 +1945,10 @@ function  simuladorSensores(pass){
     
     
     console.log("Temperatura sensada al momento del ingreso (int): "+tempActInt);
-
-    intervalSensores = setInterval(function(){
     
-         
-        recoveryUserByPass(pass, function(err,content){
+    recoveryUserByPass(pass, function(err,content){
             if (err)
-                console.log(err);
+                console.log ("----->Recovery User By Pass --- Linea 2025<------\n"+err);            
             else{
                 if (content !== null){  
                     dbLuz = content[0].luz;
@@ -1979,27 +1971,66 @@ function  simuladorSensores(pass){
                 pwm.write(0.5);
             }
            
-            //Acondicionamiento de la temperatura
-            tempInt = parseInt(dbTemp,10);
-            
-            //Tomar una nueva temperatura actual y ver como va variando con el acondicionamiento
-            if (tempInt < tempActInt){
-                console.log("-->Bajar temperatura "+tempActInt);
-                tempActInt--;
-            }else{
-                if (tempInt > tempActInt){
-                    console.log("-->Subir temperatura "+tempActInt);
-                    tempActInt++;
-                }else{
-                    console.log("-->Mantener temperatura "+tempActInt);
-                }            
-            }    
+           
             
             
         });
     
+    
+    
+    intervalSensores = setInterval(function(){
+        tempActInt = tempActual();  
+        if (GLOBAL_modificoPerfil === 1){
+            recoveryUserByPass(pass, function(err,content){
+                if (err)
+                    console.log ("----->Recovery User By Pass --- Linea 2025<------\n"+err);            
+                else{
+                    if (content !== null){  
+                        dbLuz = content[0].luz;
+                        dbTemp = content[0].temp;
+                    }
+                    else{
+                        //default
+                        console.log("Error: Tomo valores por defecto");
+                        dbLuz = 50;
+                        dbTemp = 24;
+                    }
+                }
+                //Acondicionamiento de la luz
+                var luz_led = (dbLuz / 100);
+                if (luz_led <= 1.0){
+                    pwm.write(luz_led);
+                }
+                else{
+                    //default
+                    pwm.write(0.5);
+                }
+
+            });
+            console.log("-----------CAMBIO EL PERFIL EL USUARIO: "+GLOBAL_usr_habitacion+"-----------");
+            GLOBAL_modificoPerfil = 0;
+        }
         
+       
+        //Acondicionamiento de la temperatura
+        tempInt = parseInt(dbTemp,10);
         
+        //Tomar una nueva temperatura actual y ver como va variando con el acondicionamiento
+        if (tempInt < tempActInt){
+            //console.log("-->Bajar temperatura "+tempActInt);
+            pinCooler.write(cerrado); //Cooler ON
+            relayCalefaccion.off();   //LED OFF
+        }else{
+            if (tempInt > tempActInt){
+                //console.log("-->Subir temperatura "+tempActInt);
+                relayCalefaccion.on(); //LED ON
+                pinCooler.write(abierto);//Cooler OFF
+            }else{
+                //console.log("-->Mantener temperatura "+tempActInt);
+                pinCooler.write(abierto);   //Cooler OFF
+                relayCalefaccion.off();     //LED OFF
+            }            
+        }    
+    
     },1000);
 }
-

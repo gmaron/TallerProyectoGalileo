@@ -14,6 +14,7 @@
     "mysql": "^2.9.0",
     "sleep":"latest",
     "request":"latest",
-    "sequence":"^3.0.0"
+    "sequence":"^3.0.0",
+    "jsupm_grove":"latest"
   }
 }
