@@ -1,4 +1,4 @@
-{
+  {
   "name": "blankapp",
   "description": "",
   "version": "0.0.0",
@@ -15,6 +15,7 @@
     "sleep":"latest",
     "request":"latest",
     "sequence":"^3.0.0",
-    "jsupm_grove":"latest"
+    "jsupm_grove":"latest",
+    "memwatch":"latest"
   }
 }

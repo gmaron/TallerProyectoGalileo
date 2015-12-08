@@ -61,55 +61,6 @@
     
        <script type="text/javascript" src="/javascript/prototype.js"></script>    
     
-    <script>
-        function musicNext(){
-            new Ajax.Request('/musicSiguiente', {
-              method: 'post',
-            
-              });
-        }
-        
-        function musicBack(){
-            new Ajax.Request('/musicAnterior', {
-              method: 'post',
-            
-              });
-        }
-        
-        function musicResume(){
-            new Ajax.Request('/resumeMusic', {
-              method: 'post',
-            
-              });
-        }
-        
-        function musicPause(){
-            new Ajax.Request('/musicPause', {
-              method: 'post',
-            
-              });
-        }
-        
-        var informacion = function infoSong(){
-            new Ajax.Request('/infoSong', {
-              method: 'post',
-              onSuccess: success
-              });
-        }
-        
-        function success(response){
-                var sonando = "Sonando: ";
-                var container = $('informacionCancion');
-                var content = response.responseText;
-                
-                container.update(sonando+content);
-            }
-        <% if (inside == "1" ) { %>
-            setInterval(informacion,1000);
-        <% } %>
-        
-        
-    </script>
     
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
 
@@ -120,10 +71,16 @@
 <nav class="navbar navbar-default" style="background:#0B0B61">
   <div class="container-fluid">    
     <div class="navbar-header" >
-        <a class="navbar-brand" style="color:white;">GALILEO</a>
+         <a class="navbar-brand" style="color:white;">GALILEO</a>
+        <button type="button" class="navbar-toggle btn-primary" data-toggle="collapse"
+            data-target=".navbar-ex1-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
     </div>
   
-    <div class="collapse navbar-collapse" > 
+    <div class="collapse navbar-collapse navbar-ex1-collapse" > 
         
         <form  name="historico" action="/historico" class="navbar-form navbar-left" method="post" role="tag">                 
             <div class="form-group">
@@ -137,17 +94,7 @@
             <button id="perfil" type="submit" class="btn btn-inverse">Perfil</button>    
 
         </form>             
-        <% if (inside == "1" ) { %>
-        <div class="navbar-center">
-           <input type='image' id="musicAnterior" onclick="musicBack();" src="/img/back.png" width="33" height="33"/> 
-           <input type='image' id="musicSiguiente" onclick="musicNext();" src="/img/foward.png" width="33" height="33"/> 
-           <input type='image' id="musicPause" src="/img/pause.png" onclick="musicPause();" width="33" height="33"/> 
-           <input type='image' id="resumeMusic" onclick="musicResume();" src="/img/play.png" width="33" height="33"/> 
-        </div>
-         <div class="navbar-center-music">
-           <label id="informacionCancion" class="music-label"></label>    
-        </div>
-        <% } %>
+       
         <form class="navbar-form navbar-right" role="tag" method="post" name="cerrarSesion"  action="/cerrarSesion">
             <div class="form-group">
             </div>
@@ -157,7 +104,18 @@
     </div>  
   </div>
 </nav>
-        <div class="panel panel-default" style="width: 800px;min-width:100px;position:absolute;left: 50%; margin-left: -400px;" >
+    
+        <div class="panel panel-default" style="width: 80%; position:relative;  left: 10%;" >
+      <!-- Default panel contents -->
+        <div class="panel-heading" style="font-family: Arial; font-size: 140%;background:#0B0B61;color:white;">
+          <%= dataAuditoria %>
+        </div>
+    </div>    
+    
+    <br>
+<br>
+    
+    <div class="panel panel-default" style="width: 80%; position:relative;  left: 10%;" >
       <!-- Default panel contents -->
         <div class="panel-heading" style="font-family: Arial; font-size: 140%;text-align:center;background:#0B0B61;color:white;">Usuarios</div>
         <div class="tabla">
@@ -165,8 +123,6 @@
            <tr>
               <th>Nombre</th><th>Apellido</th><th>DNI</th><th>Email</th>
            </tr>
-
-
            <%     
             for (var i = 0; i < data.length ; i++) {         
             %>
@@ -189,7 +145,7 @@
 <br>
 <br>
 
-    <div class="panel panel-default" style="width: 800px;min-width:100px;position:absolute;left: 50%; margin-left: -400px;margin-top:18%" >
+    <div class="panel panel-default" style="width: 80%; position:relative;  left: 10%;" >
       <!-- Default panel contents -->
         <div class="panel-heading" style="font-family: Arial; font-size: 140%;text-align:center;background:#0B0B61;color:white;">Ingreso de usuarios - Historico</div>
         <div class="tabla">
@@ -213,16 +169,8 @@
         </div>  
     </div>
     
-<br>
-<br>
 
-    <div class="panel panel-default" style="width: 800px;min-width:100px;position:absolute;left: 50%; margin-left: -400px;margin-top:36%" >
-      <!-- Default panel contents -->
-        <div class="panel-heading" style="font-family: Arial; font-size: 140%;background:#0B0B61;color:white;">
-          <%= dataAuditoria %>
-        </div>
-    </div>      
-          
+
 
 </body>
 </html>
