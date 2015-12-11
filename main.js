@@ -95,6 +95,23 @@ app.get("/", function (req, res) {
     });
 });
 
+
+/*
+*
+*   function: passwordRandom()
+*       ---> genera una contrasena de cuatro (4) numeros aleatorios
+*
+*/
+function passwordRandom(){
+    var text = "";
+    var possible = "0123456789";
+
+    for( var i=0; i < 4; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 app.post("/registro", function (req, res){
       var regEmail = req.body.email;
       recoveryUserByEmail(regEmail,function (err,content){
@@ -1427,7 +1444,7 @@ function updateUserDataBase(nombre,apellido,email,temp,luz,id,playlist){
 /*
 *   function: recoveryAllUser()
 *       ---> genera la conexion y retorna todos los usuarios de la BD     
-*   Retorno
+*   Retorno:
 *       --> filas con datos de usuarios
 *       --> null si no hay ningun usuario
 *
@@ -1466,7 +1483,7 @@ function recoveryAllUsers(callback){
 *   Parametros:       
 *       --> email: email del usuario
 *       --> pass: contrasena
-*   Retorno
+*   Retorno:
 *       --> fila con datos del usuario si existe
 *       --> null si no existe
 *
@@ -1505,7 +1522,7 @@ function recoveryUser(email,pass,callback){
 *            en la base de datos     
 *   Parametros:       
 *       --> email: email del usuario
-*   Retorno
+*   Retorno:
 *       --> fila con datos del usuario si existe
 *       --> null si no existe
 *
@@ -1541,7 +1558,7 @@ function recoveryUserByEmail (email,callback){
 *            en la base de datos     
 *   Parametros:       
 *       --> pass: pass del usuario
-*   Retorno
+*   Retorno:
 *       --> fila con datos del usuario si existe
 *       --> null si no existe
 *
@@ -1571,40 +1588,14 @@ function recoveryUserByPass (pass,callback){
     });
 }
 
-function fechaHoy(){
-    var hoy = new Date();
-    var dd = hoy.getDate();
-    var mm = hoy.getMonth()+1; //Enero es el mes 0
-    var yy = hoy.getFullYear();
-    
-    return dd+"/"+mm+"/"+yy;
-
-}
-
 /*
-*
-*   function: passwordRandom()
-*       ---> genera una contrasena de ocho (8) numeros aleatorios
-*
+*   function: saveAuditoriaDataBase()
+*       ---> genera la conexion y crea una auditoria cuando un usuario ingresa 
+*            a la habitación
+*   Parametros:       
+*       --> email: email del usuario
+*  
 */
-
-function passwordRandom(){
-    var text = "";
-    var possible = "0123456789";
-
-    for( var i=0; i < 4; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-}
-
-/*
-*
-*
-*
-*
-*/
-
 function saveAuditoriaDataBase (email){
     
     var fechaEntrada = fechaHoyConHora();
@@ -1629,6 +1620,12 @@ function saveAuditoriaDataBase (email){
     
 }
 
+
+/*
+*   function: recoveryAuditoriaNULL()
+*       ---> genera la conexion y recupera todas las auditorias con fecha de salida null
+*     
+*/
 function recoveryAuditoriaNULL(callback){
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
@@ -1652,9 +1649,16 @@ function recoveryAuditoriaNULL(callback){
           }
         connection.end();
     });
-    
 }
 
+/*
+*   function: recoveryAllAuditoria()
+*       ---> genera la conexion y recupera todas las auditorias
+*   Retorno:       
+*       --> filas con auditorias
+*       --> null si no hay ninguna
+*  
+*/
 function recoveryAllAuditoria (callback){
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
@@ -1681,6 +1685,14 @@ function recoveryAllAuditoria (callback){
 
 }
 
+/*
+*   function: updateAuditoriaDataBase()
+*       ---> genera la conexion y modifica una auditoria escribiendo la fecha de salida
+*            cuando el usuario sale de la habitacion
+*   Parametros:
+*       --> email: email del usuario para obtener la auditoria del mismo
+*  
+*/
 function updateAuditoriaDataBase(email){
 
     var fechaSalida = fechaHoyConHora();
@@ -1699,7 +1711,6 @@ function updateAuditoriaDataBase(email){
             console.log(err);
         
     });
-    
     connection.end();  
 }
 
