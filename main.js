@@ -24,11 +24,11 @@ var path = require('path');
 var appDir = path.dirname(require.main.filename);
 
 
-
+/*-------Variables globales con datos del admin--*/
 var emailAdmin = "";
 var claveAdmin = "1234";
 
-
+/*-------Variables para comunicarse con la PC servidor y controlar MUSICA--*/
 var portMusic = "8000";
 var ipMusic = "192.168.0.12";
 var dirMusic = "http://"+ipMusic+":"+portMusic+"/";
@@ -45,9 +45,10 @@ var dbNumPlay0 = "0";
 var dbNumPlay1 = "2";
 var dbNumPlay2 = "4";
 
-var GLOBAL_modificoPerfil = 0;
-var GLOBAL_usr_habitacion = "";
-var GLOBAL_usr_pass = "";
+/*--Variables globales del usuario que se encuentra en la habitacion--*/
+var GLOBAL_modificoPerfil = 0; //si el usuario que esta en la habitacion cambia se perfil, se establecera en 1
+var GLOBAL_usr_habitacion = ""; //email del usuario que esta en la habitacion 
+var GLOBAL_usr_pass = ""; //pass del usuario que esta en la habitacion
 
 app.get("/", function (req, res) {
   
@@ -1750,7 +1751,6 @@ function sendEmail(email,nombre,pass){
 }
 
 /*
-*
 *   getPassword()
 *       --> obtiene la contrasena ingresada por el usuario
 *   Parametros:
@@ -1798,6 +1798,17 @@ child = exec(ejecutarTeclas, function (error, stdout, stderr) {
   }
 });
 
+
+
+/*
+*
+*   fechaHoyConHora()
+*       --> obtiene la fecha del dia con hora
+*   Parametros:
+*       --> vacio
+*   Retorno:
+*       --> fecha en formato: hh:min - dd/mm/aa
+*/
 function fechaHoyConHora(){
     var hoy = new Date();
     var dd = hoy.getDate();
@@ -1818,12 +1829,19 @@ function fechaHoyConHora(){
     return hh+":"+min+" - "+dd+"/"+mm+"/"+yy_2_digitos;
 }
 
-
+/*---------------Variables para LCD----------------------------*/
 var lcd = require("jsupm_i2clcd");
 var display = new lcd.Jhd1313m1(0, 0x3E, 0x62);
 var sleep = require("sleep");
 var puedoEscribir = 1;
 
+/*
+*   mensajeLCDconDelay()
+*       --> escribe un mensaje y lo mantiene por dos segundos
+*   Parametros:
+*       --> msj: mensaje a escribir en la posicion 0,0
+*       --> msj2: mensaje a escribir en la posicion 1,0
+*/
 function mensajeLCDconDelay (msj,msj2){
     puedoEscribir = 0;
     writeLCD(msj,0,0);
@@ -1832,21 +1850,58 @@ function mensajeLCDconDelay (msj,msj2){
     puedoEscribir = 1;
 }
 
+/*
+*   writeLCD()
+*       --> escribe un mensaje en el lcd
+*   Parametros:
+*       --> dato: string a escribir
+*       --> fil: fila en la que se escribira
+*       --> col: columna en la que se escribira
+*/
 function writeLCD (dato,fil,col){
     display.setCursor(fil,col);
     display.write(dato);
-    
 }
 
+/*
+*   cleanLCD()
+*       --> limpia el lcd
+*   Parametros:
+*       --> vacio
+*/
 function cleanLCD(){
     writeLCD("                ",0,0);
     writeLCD("                ",1,0);
 }
 
 
+var fs = require('fs'); //requiere "fs" para leer y escribir el archivo
+var hayUnoAdentro = 0;  //variable para controlar los mensajes del LCD
+var intervalSensores;   //variable que permitira controlar la ejecucion de una funcion 
+
+//pin 6 para manejar el "relay module"
+var pinCooler = new mraa.Gpio(6); 
+//establece al pin como salida
+pinCooler.dir(mraa.DIR_OUT);
+var abierto = 1; //abierto: abre el relay, apaga el cooler
+var cerrado = 0; //cerrado: cierra el relay, enciende el cooler
+pinCooler.write(abierto); //apaga el cooler
+
+var groveSensor = require('jsupm_grove'); //para manejar el relay del grove starter kit
+var relayCalefaccion = new groveSensor.GroveRelay(4);
+relayCalefaccion.off(); //apaga la "calefaccion"
+
+//PWM para controlar la luz ambiente
+var pwm = new mraa.Pwm(3);
+pwm.enable(true); //habilita el puerto
+pwm.write(0.0); //la inicializa en 0
+
+var msj_lcd = "Libre";
+var data_sin_espacio;
+
 /*
 *   Programa principal
-*       --> cada 1 segundo
+*       --> cada 200 milisegundos
 *       --> Lee el archivo teclas.txt
 *       --> Corrobora que el usuario haya apretado el Enter
 *           --> si lo apreto quiere decir que hay una nueva contrasena
@@ -1854,35 +1909,6 @@ function cleanLCD(){
 *               --> si pertenece, reconoce al usuario
 *               --> sino, informa que el usuario no existe
 */
-
-var fs = require('fs');
-var hayUnoAdentro = 0;
-var intervalSensores;
-
-//pin 6 para encender el Cooler
-var pinCooler = new mraa.Gpio(6); 
-pinCooler.dir(mraa.DIR_OUT);
-
-var abierto = 1;
-var cerrado = 0;
-pinCooler.write(abierto);
-
-// Load Grove module
-var groveSensor = require('jsupm_grove');
-
-// Create the relay switch object using GPIO pin 0
-var relayCalefaccion = new groveSensor.GroveRelay(4);
-relayCalefaccion.off();
-
-var pwm = new mraa.Pwm(3);
-
-pwm.enable(true);
-pwm.write(0.0);
-
-
-var msj_lcd = "Libre";
-var data_sin_espacio;
-
 function main(){
     
   timers.setInterval(function(){
@@ -1891,7 +1917,6 @@ function main(){
             console.log("Error lectura de archivos -> Linea 1864\n"+err);
         }
         else{
-    
         data_sin_espacio = data.replace(" ","");
         if (data_sin_espacio.search("Enter") > 0){
 
@@ -1900,7 +1925,6 @@ function main(){
                     if(err)
                         console.log("Error escritura de archivos -> Linea 1873\n"+err);
                 });
-
                 //Si hay una persona adentro y se quiere ir
                 if (pass === GLOBAL_usr_pass){
                     updateAuditoriaDataBase(GLOBAL_usr_habitacion);
@@ -1942,9 +1966,6 @@ function main(){
                         mensajeLCDconDelay("---Habitacion---","----Ocupada---->");
                     }
                 }
-
-
-
           }
         else{
             if (puedoEscribir == 1){
@@ -1960,33 +1981,34 @@ function main(){
       }
     });
   },200);
-    
 }
 
-
-
-//GROVE Kit A0 Connector --> Aio(0)
-var myAnalogPin = new mraa.Aio(0);
+var myAnalogPin = new mraa.Aio(0); //sensor de temperatura en A0
 var B = 3975;   //Constante para el calculo de la temperatura
-var lecturaAnalogica;
-var resistance;
-var celsius_temperature;
+var lecturaAnalogica; //almacenara la muestra analogica del sensor
+var resistance; //para calcular la resistencia del sensor
+var celsius_temperature; //para almacenar el valor final de temperatura en grados celsius
 
+
+/*
+*  simuladorSensores()
+*      se encargara de acondicionar la habitacion
+*       Parametros:
+*           --> pass: password del usuario que se encuentra dentro de la habitacion
+*/
 function simuladorSensores(pass){
    
     var dbLuz, dbTemp;
-    pwm.period_us(2000);
-    lecturaAnalogica = myAnalogPin.read();
-    resistance = (1023 - lecturaAnalogica) * 10000 / lecturaAnalogica; //get the resistance of the sensor;
-    celsius_temperature = 1 / (Math.log(resistance / 10000) / B + 1 / 298.15) - 273.15;//convert to temperature via datasheet ;
+    pwm.period_us(2000); //establece el periodo de la señal PWM
+    lecturaAnalogica = myAnalogPin.read(); //toma una muestra analogica
+    resistance = (1023 - lecturaAnalogica) * 10000 / lecturaAnalogica; //calcula la resistencia del sensor
+    celsius_temperature = 1 / (Math.log(resistance / 10000) / B + 1 / 298.15) - 273.15;//convierte la muestra a temperatura en grados celsius
+    var tempActInt = Math.floor( celsius_temperature ); //temperatura actual del ambiente
+    var tempInt; //temperatura establecida por el usuario
     
-    
-    var tempActInt = Math.floor( celsius_temperature );
-    var tempInt;
-
-
     console.log("Temperatura sensada al momento del ingreso (int): "+tempActInt);
     
+    //recupera al usuario por password y toma los valores de las variables establecidas en el perfil 
     recoveryUserByPass(pass, function(err,content){
             if (err)
                 console.log ("----->Recovery User By Pass --- Linea 2025<------\n"+err);            
@@ -2016,13 +2038,16 @@ function simuladorSensores(pass){
             
             
         });
-        
+    
+    //se chequea cada un segundo la temperatura actual para saber si ha variado y asi decidir su acondicionamiento    
     intervalSensores = timers.setInterval(function(){
         lecturaAnalogica = myAnalogPin.read();
         resistance = (1023 - lecturaAnalogica) * 10000 / lecturaAnalogica; //get the resistance of the sensor;
         celsius_temperature = 1 / (Math.log(resistance / 10000) / B + 1 / 298.15) - 273.15;//convert to temperature via datasheet ;
         tempActInt = Math.floor( celsius_temperature ); 
-        if (GLOBAL_modificoPerfil === 1){
+        
+        if (GLOBAL_modificoPerfil === 1){ //si el usuario que esta en la habitacion cambio su perfil, se tendra que reacondicionar
+                                          //teniendo en cuenta que pudo haber cambiado algunos de los valores a controlar
             recoveryUserByPass(pass, function(err,content){
                 if (err)
                     console.log ("----->Recovery User By Pass --- Linea 2025<------\n"+err);            
@@ -2055,7 +2080,6 @@ function simuladorSensores(pass){
         
        
         //Acondicionamiento de la temperatura
-       
         tempInt = parseInt(dbTemp,10);
         //Tomar una nueva temperatura actual y ver como va variando con el acondicionamiento
         if (tempInt < tempActInt){
@@ -2074,8 +2098,13 @@ function simuladorSensores(pass){
     },1000);
 }
 
-
-
+/*
+*  inciarIntelGalileo()
+*       Chequea si existe alguna auditoria sin cerrar. 
+*           --> si existe, continua con el usuario que estaba logueado reacondicionando la habitacion. 
+*               si esto ocurre es porque se cayo el sistema por algun motivo o se corto el suministro de luz
+*           --> si no existe, inicia el sistema desde cero.
+*/
 function inciarIntelGalileo (){
     
     sequence.then(function(next){
@@ -2154,12 +2183,10 @@ function inciarIntelGalileo (){
 
 }
 
-inciarIntelGalileo();
-
+inciarIntelGalileo(); //Llama a la función iniciarIntelGalileo para inicializar el sistema
 
 //para observar y controlar la memoria
 var memwatch = require('memwatch');
-
 var myStream = fs.createWriteStream(appDir+"/infoMemoria.txt");
 
 memwatch.on('leak', function(info) {
