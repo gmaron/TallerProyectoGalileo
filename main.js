@@ -1,32 +1,34 @@
+/*---------Modulos externos necesarios---------*/
 var console = require('console');
 var express = require("express");
 var app = express();
-
-var mraa = require("mraa");
-var timers = require("timers");
-
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extend:true
 }));
+var Sequence =  require('sequence').Sequence;
+var sequence = Sequence.create();
 
+app.set('view options', { layout: false });
+app.set('view engine', 'ejs');
+var request = require("request");
+
+
+
+/*-------Modulos del Node.js necesarios-------*/
+var mraa = require("mraa");
+var timers = require("timers");
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
+
+
 
 var emailAdmin = "";
 var claveAdmin = "1234";
 
-app.set('view options', { layout: false });
-app.set('view engine', 'ejs');
 
-
-var Sequence =  require('sequence').Sequence;
-var sequence = Sequence.create();
-
-
-var request = require("request");
 var portMusic = "8000";
 var ipMusic = "192.168.0.12";
 var dirMusic = "http://"+ipMusic+":"+portMusic+"/";
@@ -49,7 +51,6 @@ var GLOBAL_usr_pass = "";
 
 app.get("/", function (req, res) {
   
-    
     sequence.then(function(next){
         timers.setTimeout(function(){
             request(dirMusic+"damePlaylist?num="+dbNumPlay0, function(error, response, body) {
@@ -1308,7 +1309,6 @@ app.post("/musicSiguiente",function(req,res){
      res.end();
 });
 
-var cancionActual ="";
 app.post("/musicAnterior",function(req,res){
     var reqPassCompleta = String(req.body.pass);
     var reqPass = reqPassCompleta.substring(5);
@@ -1432,7 +1432,12 @@ function recoveryAllUsers(callback){
           }else{
               return callback (err,null);
           }
+        
+        //se realiza la consulta
+        //correspondiente
+        
         connection.end();
+        
     });
 
     
@@ -1472,10 +1477,10 @@ function recoveryUser(email,pass,callback){
           }else{
               return callback (err,null);
           }
-        connection.end();
     });
 
-    
+            connection.end();
+
     
 }
 
