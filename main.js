@@ -1389,6 +1389,19 @@ function saveUserDataBase(nombre,apellido,dni,email,pass,temp,luz,playlist){
     connection.end();
 }
 
+
+/*
+*   function: updateUserDataBase()
+*       ---> genera la conexion y modifica los datos de un usuario en la base de datos
+*   Parametros       
+*		--> nombre: nombre del usuario
+*		--> apellido: apellido del usuario
+*		--> email: email del usuario
+*		--> temp: temperatura elegida por el usuario
+*		--> luz: porcentaje de luz elegido por el usuario
+*       --> id: id del usuario a modificar
+*       --> playlist: playlist elegida por el usuario
+*/
 function updateUserDataBase(nombre,apellido,email,temp,luz,id,playlist){
       var mysql      = require('mysql');
       var connection = mysql.createConnection({      
@@ -1410,6 +1423,15 @@ function updateUserDataBase(nombre,apellido,email,temp,luz,id,playlist){
     connection.end();
 }
 
+
+/*
+*   function: recoveryAllUser()
+*       ---> genera la conexion y retorna todos los usuarios de la BD     
+*   Retorno
+*       --> filas con datos de usuarios
+*       --> null si no hay ningun usuario
+*
+*/
 function recoveryAllUsers(callback){
     
     var mysql      = require('mysql');
@@ -1455,7 +1477,6 @@ function recoveryAllUsers(callback){
 *       --> null si no existe
 *
 */
-
 function recoveryUser(email,pass,callback){
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
@@ -1495,7 +1516,6 @@ function recoveryUser(email,pass,callback){
 *       --> null si no existe
 *
 */
-
 function recoveryUserByEmail (email,callback){
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
