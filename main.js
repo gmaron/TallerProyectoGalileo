@@ -1366,7 +1366,7 @@ var nameDataBase = 'tp2';           // nombre de la base de datos
 *		--> pass: contrasena del usuario
 *		--> temp: temperatura elegida por el usuario
 *		--> luz: porcentaje de luz elegido por el usuario
-*
+*       --> playlist: playlist elegida por el usuario
 */
 
 function saveUserDataBase(nombre,apellido,dni,email,pass,temp,luz,playlist){
