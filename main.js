@@ -1375,7 +1375,7 @@ var nameDataBase = 'tp2';           // nombre de la base de datos
 /*
 *   function: saveUserDataBase()
 *       ---> genera la conexion y guarda un usuario en la base de datos
-*   Parametros       
+*   Parametros:       
 *		--> nombre: nombre del usuario
 *		--> apellido: apellido del usuario
 *		--> dni: dni del usuario
@@ -1443,7 +1443,9 @@ function updateUserDataBase(nombre,apellido,email,temp,luz,id,playlist){
 
 /*
 *   function: recoveryAllUser()
-*       ---> genera la conexion y retorna todos los usuarios de la BD     
+*       ---> genera la conexion y retorna todos los usuarios de la BD
+*   Parametros:
+*       --> vacio
 *   Retorno:
 *       --> filas con datos de usuarios
 *       --> null si no hay ningun usuario
@@ -1623,8 +1625,12 @@ function saveAuditoriaDataBase (email){
 
 /*
 *   function: recoveryAuditoriaNULL()
-*       ---> genera la conexion y recupera todas las auditorias con fecha de salida null
-*     
+*       ---> genera la conexion y recupera la auditoria con fecha de salida null
+*   Parametros:
+*       --> vacio
+*   Retorno: 
+*       --> una auditoria, si existe
+*       --> null, si no existe
 */
 function recoveryAuditoriaNULL(callback){
     var mysql      = require('mysql');
@@ -1654,6 +1660,8 @@ function recoveryAuditoriaNULL(callback){
 /*
 *   function: recoveryAllAuditoria()
 *       ---> genera la conexion y recupera todas las auditorias
+*   Parametros:
+*       --> vacio
 *   Retorno:       
 *       --> filas con auditorias
 *       --> null si no hay ninguna
