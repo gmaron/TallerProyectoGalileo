@@ -1455,14 +1455,8 @@ function recoveryAllUsers(callback){
               return callback (err,null);
           }
         
-        //se realiza la consulta
-        //correspondiente
-        
         connection.end();
-        
     });
-
-    
 }
 
 /*
@@ -1541,6 +1535,17 @@ function recoveryUserByEmail (email,callback){
     });
 }
 
+/*
+*   function: recoveryUserByPass()
+*       ---> genera la conexion y consulta si un usuario se encuentran
+*            en la base de datos     
+*   Parametros:       
+*       --> pass: pass del usuario
+*   Retorno
+*       --> fila con datos del usuario si existe
+*       --> null si no existe
+*
+*/
 function recoveryUserByPass (pass,callback){
     var mysql      = require('mysql');
     var connection = mysql.createConnection({
