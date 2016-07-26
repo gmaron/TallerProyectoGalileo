@@ -14,7 +14,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
                 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <style type="text/css">
         body {        
             font-family: "Arial";
@@ -25,8 +24,7 @@
     <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
 </head>
 <body>
-
-
+<div class="container">  
 <nav class="navbar navbar-default" style="background:#0B0B61">
   <div class="container-fluid">    
     <div class="navbar-header" >
@@ -40,18 +38,23 @@
       </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">              
       <ul class="nav navbar-nav navbar-right">
-
-        <form class="navbar-form navbar-left" action="/log" method="post" role="search">
+        <div class="col-md-12">
+        <form class="form-inline" action="/log" method="post" role="search">
+          <div class="navbar-form navbar-left">
             <label style="color:red"><%= errorMessage %></label>
             <div class="form-group">
-              <input type="text" class="form-control" id="email" style="width: 100%" name="email" placeholder="email@dominio.com">
+                <input type="text" class="form-control" id="email" style="width: 100%" name="email" placeholder="email@dominio.com">
             </div>
             <div class="form-group">
-              <input type="password" class="form-control" style="width: 100%" id="pass" name="pass" placeholder="******************">
+                  <input type="password" class="form-control" style="width: 100%" id="pass" name="pass" placeholder="******************">
             </div>
-            <button name="commandButton" type="submit" class="btn btn-default" value="LogIn" style="background:white;color:black">Entrar</button>
-            
-        </form>  
+            <div class="form-group">
+                <button name="commandButton" type="submit" class="form-control btn btn-default" value="LogIn" style="background:white;color:black">Entrar</button>
+              </div>
+        </div> 
+        </form> 
+       </div>
+
       </ul>
     </div>
 
@@ -61,34 +64,40 @@
     
 <br>
 <br>    
-    
-<div class="container">    
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >      
-      <div class="panel panel-info">
-          <div class="panel-heading" style="background:#0B0B61;">
-            <h3 class="panel-title" style="text-align: center;color:white;">Registrarse</h3>
-          </div>
-          <div class="panel-body">
-              <div class="col-md-12">
-              <div class="row">   
-                  <form class="form-horizontal" role="form" name="form1" method="post" action="/registro" target="_self" data-toggle="validator">
-                    <div >
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" name="nom" placeholder="Juan" required="true">
+  
+<div class ="col-xs-12 col-sm-12 col-md-6 col-md-offset-3">
+<div class="panel panel-default ">
+  <div class="panel-heading" style="background:#0B0B61;">
+      <h3 class="panel-title" style="text-align: center;color:white;">Registrarse</h3>
+  </div>
+  <div class="panel-body">
+      <form role="form" name="form1" method="post" action="/registro" target="_self" data-toggle="validator">
+    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-12" >
+                          <label for="nombre">Nombre</label>
+                          <input type="text" class="form-control" name="nom" placeholder="Juan" required="true">
+                      </div>
                     </div>
-                    <div>
-                        <label for="ape">Apellido</label>
-                        <input type="text" class="form-control" name="ape" placeholder="Lopez" required="true">
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-12">
+                          <label for="ape">Apellido</label>
+                          <input type="text" class="form-control" name="ape" placeholder="Lopez" required="true">
+                      </div>
                     </div>
-                     <div>
+                    <div class="row">
+                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <label for="dni">DNI</label>
                         <input type="text" class="form-control" name="dni" pattern="^[0-9]{8,}" maxlength="8" placeholder="11111111" required="true"> 
                     </div>
-                    <div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" placeholder="email@dominio.com">
                     </div>
-                    <div >
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
                         <label for="temp">Temperatura (°C)</label>
                         <input name ="temp" type="range" min="18" max="40" value="18" step="1" onchange="showValueTemp(this.value)" />
                             <span id="rangeTemp">18</span>
@@ -99,7 +108,9 @@
                             }
                             </script>
                     </div>
-                    <div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
                         <label for="luz">Iluminacion (%)</label>
                         <input name ="luz" type="range" min="0" max="100" value="50" step="5" onchange="showValueLuz(this.value)" />
                             <span id="rangeLuz">50</span>
@@ -110,8 +121,9 @@
                             }
                             </script>
                     </div>
-                      
-                      <div>
+                    </div>
+                    <div class="row">  
+                    <div class="col-xs-12 col-sm-12 col-md-12">
                         <label for="playlist">Playlist</label>
                         <br>
                         <!-- Trigger the modal with a button -->
@@ -122,22 +134,21 @@
                         <input type="radio" name="playlist" value="<%= indexPlaylist2 %>" >
                         <a class="menu_link" data-toggle="modal" data-target="#myModal2" style="cursor: pointer;"><%= namePlaylist2 %></a>
 
-</div>
-
-                      </div>  
-                                        
-                          <button name="commandButton" type="submit" class="btn btn-default" value="Registro" style="background:#0B0B61;color:white;width:100%; margin-left: -1px;">Registrarse</button>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                    <button name="commandButton" type="submit" class="btn btn-default" value="Registro" style="background:#0B0B61;color:white;width:100%; margin-left: -1px;">Registrarse</button>
                           <label style="color:red"><%= errorMessageRegister %></label>
                           <label style="color:green"><%= successMessageRegister %></label>
-                    
-                  </form>                                                                                  
-                </div> 
-                  
-                  
-                </div>
-              </div>
-        </div>                          
-    </div>
+                    </div>
+                    </div>
+  </div>
+  </form>
+</div>
+</div>
+  
+   
     
                       <!-- Modal -->
                       <div class="modal fade" id="myModal0" role="dialog">
