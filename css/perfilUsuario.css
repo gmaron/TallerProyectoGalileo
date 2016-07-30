@@ -1,0 +1,54 @@
+body {        
+    font-family: "Arial";
+    font-size: 120%;
+    background-image: url("../img/fondo.jpg");
+    
+}   
+
+.navbar-center
+{
+    position: absolute;
+    text-align: center;
+    margin: auto;
+    margin-top:10px;
+    margin-left: 10%;
+}
+
+ a:hover {
+  cursor:pointer;
+ }
+
+.navbar-center-music
+{
+    position: absolute;
+    text-align: center;
+    margin: auto;
+    margin-top:10px;
+    
+}
+
+.music-label{
+    font-family: "Arial";
+    font-size: 140%;
+    color:white;
+    text-align: center;
+    }
+
+  .form-horizontal .control-label {
+    text-align:left;
+  }
+    .navbar .navbar-form{
+      display: inline-block;
+      float: none;
+      
+    }
+   @media (min-width: 768px) {
+    .navbar .navbar-form {
+        display: inline-block;
+        float: none;
+    }
+    
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+  }

@@ -1,8 +1,179 @@
 {
   "project": {
-    "projectSettingsVersion": "1.2",
+    "projectSettingsVersion": "3.0.0",
     "currentBuildConfiguration": "Android",
     "projectFiles": {},
-    "projectDirectories": {}
+    "projectDirectories": {},
+    "initialAutoPluginCount": 0
+  },
+  "editorTab": {
+    "currentEditorMode": 0
+  },
+  "iot-tab": {
+    "fileStatus": {
+      ".gitattributes": {
+        "previousModTime": 1467664037174,
+        "modified": 1467664037174,
+        "seen": true,
+        "name": ".gitattributes"
+      },
+      ".gitignore": {
+        "previousModTime": 1467664037176,
+        "modified": 1467664037176,
+        "seen": true,
+        "name": ".gitignore"
+      },
+      "Practica2.xdk": {
+        "previousModTime": 1467687911956,
+        "modified": 1467687911956,
+        "seen": true,
+        "name": "Practica2.xdk"
+      },
+      "Practica2.xdke": {
+        "previousModTime": 1468377334878,
+        "modified": 1468377334878,
+        "seen": true,
+        "name": "Practica2.xdke"
+      },
+      "Practica2_1.2.0.xdk_bak": {
+        "previousModTime": 1467664743420,
+        "modified": 1467664743420,
+        "seen": true,
+        "name": "Practica2_1.2.0.xdk_bak"
+      },
+      "Practica2_1.2.0.xdke_bak": {
+        "previousModTime": 1467664743421,
+        "modified": 1467664743421,
+        "seen": true,
+        "name": "Practica2_1.2.0.xdke_bak"
+      },
+      "README.md": {
+        "previousModTime": 1467664037197,
+        "modified": 1467664037197,
+        "seen": true,
+        "name": "README.md"
+      },
+      "historicoAdministrador.ejs": {
+        "previousModTime": 1467664037199,
+        "modified": 1467664037199,
+        "seen": true,
+        "name": "historicoAdministrador.ejs"
+      },
+      "icon.png": {
+        "previousModTime": 1467664037201,
+        "modified": 1467664037201,
+        "seen": true,
+        "name": "icon.png"
+      },
+      "infoMemoria.txt": {
+        "previousModTime": 1467664037234,
+        "modified": 1467664037234,
+        "seen": true,
+        "name": "infoMemoria.txt"
+      },
+      "inicio.ejs": {
+        "previousModTime": 1467664037236,
+        "modified": 1467664037236,
+        "seen": true,
+        "name": "inicio.ejs"
+      },
+      "main.js": {
+        "previousModTime": 1468365280475,
+        "modified": 1468365280475,
+        "seen": true,
+        "name": "main.js"
+      },
+      "package.json": {
+        "previousModTime": 1467664037248,
+        "modified": 1467664037248,
+        "seen": true,
+        "name": "package.json"
+      },
+      "perfilAdministrador.ejs": {
+        "previousModTime": 1467664037250,
+        "modified": 1467664037250,
+        "seen": true,
+        "name": "perfilAdministrador.ejs"
+      },
+      "perfilUsuario.ejs": {
+        "previousModTime": 1467664037254,
+        "modified": 1467664037254,
+        "seen": true,
+        "name": "perfilUsuario.ejs"
+      },
+      "teclado.c": {
+        "previousModTime": 1467664037257,
+        "modified": 1467664037257,
+        "seen": true,
+        "name": "teclado.c"
+      },
+      "teclas.txt": {
+        "previousModTime": 1467664037258,
+        "modified": 1467664037258,
+        "seen": true,
+        "name": "teclas.txt"
+      },
+      "xdk-publish-meta-data.json": {
+        "previousModTime": 1467664743675,
+        "modified": 1467664743675,
+        "seen": true,
+        "name": "xdk-publish-meta-data.json"
+      },
+      "img/back.png": {
+        "previousModTime": 1467664037205,
+        "modified": 1467664037205,
+        "seen": true,
+        "name": "img/back.png"
+      },
+      "img/favicon.png": {
+        "previousModTime": 1467664037208,
+        "modified": 1467664037208,
+        "seen": true,
+        "name": "img/favicon.png"
+      },
+      "img/fondo.jpg": {
+        "previousModTime": 1467664037222,
+        "modified": 1467664037222,
+        "seen": true,
+        "name": "img/fondo.jpg"
+      },
+      "img/foward.png": {
+        "previousModTime": 1467664037225,
+        "modified": 1467664037225,
+        "seen": true,
+        "name": "img/foward.png"
+      },
+      "img/pause.png": {
+        "previousModTime": 1467664037227,
+        "modified": 1467664037227,
+        "seen": true,
+        "name": "img/pause.png"
+      },
+      "img/play.png": {
+        "previousModTime": 1467664037229,
+        "modified": 1467664037229,
+        "seen": true,
+        "name": "img/play.png"
+      },
+      "img/stop.png": {
+        "previousModTime": 1467664037233,
+        "modified": 1467664037233,
+        "seen": true,
+        "name": "img/stop.png"
+      },
+      "javascript/prototype.js": {
+        "previousModTime": 1467664037243,
+        "modified": 1467664037243,
+        "seen": true,
+        "name": "javascript/prototype.js"
+      },
+      "xdk/project-info.json": {
+        "previousModTime": 1467664743491,
+        "modified": 1467664743491,
+        "seen": true,
+        "name": "xdk/project-info.json"
+      }
+    },
+    "boardFileStatus": {}
   }
 }

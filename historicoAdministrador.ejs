@@ -1,173 +1,138 @@
 <html>
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-
-    <!--    <script src="sorttable.js"></script>-->
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./javascript/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.min.css">
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>    
-    <style type="text/css">
-        body {        
-            font-family: "Arial";
-            font-size: 140%;
-            background-image: url("img/fondo.jpg");
-            
-        }   
- 
-         a:hover {
-          cursor:pointer;
-         }
-                     
-        .tabla {  
-            height: 200px !important;
-            overflow: scroll;
-        }
-        
-               .navbar-center
-        {
-            position: absolute;
-            text-align: center;
-            margin: auto;
-            margin-top:10px;
-            margin-left: 25%;
-        }
-        
-        
-        .navbar-center-music
-        {
-            position: absolute;
-            text-align: center;
-            margin: auto;
-            margin-top:10px;
-            margin-left: 37%;
-        }
-        
-        .music-label{
-            font-family: "Arial";
-            font-size: 140%;
-            color:white;
-            text-align: center;
-        }
- 
-        
-    </style>
+    <script src="./bootstrap/js/bootstrap.min.js"></script>    
+    <script type="text/javascript" src="./javascript/prototype.js"></script>
     
-    
-       <script type="text/javascript" src="/javascript/prototype.js"></script>    
-    
-    
-    <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
+    <link rel="stylesheet" href="./css/perfilAdministrador.css">
 
-<title>Galileo</title>
+    <% if (inside == "1" ) { %>
+      <script type="text/javascript" src="./javascript/spotifyManager.js"></script>
+    <% } %>
+<title>Galileo - Informaci&oacute;n Administrador</title>
 </head>
 <body>
-    
-<nav class="navbar navbar-default" style="background:#0B0B61">
-  <div class="container-fluid">    
-    <div class="navbar-header" >
-         <a class="navbar-brand" style="color:white;">GALILEO</a>
-        <button type="button" class="navbar-toggle btn-primary" data-toggle="collapse"
-            data-target=".navbar-ex1-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-    </div>
-  
-    <div class="collapse navbar-collapse navbar-ex1-collapse" > 
-        
-        <form  name="historico" action="/historico" class="navbar-form navbar-left" method="post" role="tag">                 
-            <div class="form-group">
-                <button id="historico" type="submit" class="btn btn-inverse">Informacion</button>    
-            </div>            
-        </form>        
-        
-        <form name="perfil" action="/perfil" class="navbar-form navbar-left" method="post" role="tag">                
-            <div class="form-group">
-            </div>
-            <button id="perfil" type="submit" class="btn btn-inverse">Perfil</button>    
 
-        </form>             
-       
-        <form class="navbar-form navbar-right" role="tag" method="post" name="cerrarSesion"  action="/cerrarSesion">
-            <div class="form-group">
+
+<div class="container">
+  <nav class="navbar navbar-default" role="navigation" style="background:#0B0B61">
+    <div class="container-fluid">    
+      <div class="navbar-header" >
+          <a class="navbar-brand" style="color:white;">GALILEO</a>
+          <% if (inside == "1" ) { %>
+            <div class="navbar-center-music col-xs-12 col-sm-12 col-md-6">
+               <input type='image' id="musicAnterior" onclick="spotifyManager.musicBack();" src="./img/back.png" width="33" height="33"/> 
+               <input type='image' id="musicSiguiente" onclick="spotifyManager.musicNext();" src="./img/foward.png" width="33" height="33"/> 
+               <input type='image' id="musicPause" src="./img/pause.png" onclick="spotifyManager.musicPause();" width="33" height="33"/> 
+               <input type='image' id="resumeMusic" onclick="spotifyManager.musicResume();" src="./img/play.png" width="33" height="33"/> 
+               <input id="pass" type="hidden" name="pass"  value="<%= userPass %>"></input>
             </div>
-            <button id="cerrarSesion" type="submit" class="btn btn-inverse">Cerrar sesión</button>    
-  		  </form>            
-        
-    </div>  
-  </div>
-</nav>
-    
-        <div class="panel panel-default" style="width: 80%; position:relative;  left: 10%;" >
+          <% } %>
+          <button type="button" class="navbar-toggle btn-primary" data-toggle="collapse"
+              data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+        </div> <!-- end navbar header -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" >
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <form  name="historico" class="navbar-form" action="/historico" method="post" role="tag">
+                  <div class="form-group">
+                    <button id="historico" type="submit" class="btn btn-inverse">Informaci&oacute;n</button>    
+                  </div>            
+                </form>
+              </li>
+              <li>
+                <form name="perfil" class="navbar-form" action="/perfil" method="post" role="tag">
+                  <div class="form-group">
+                    <button id="perfil" type="submit" class="btn btn-inverse">Perfil</button>  
+                  </div> 
+                </form>
+              </li>
+              <li>
+                <form class="navbar-form" role="tag" method="post" name="cerrarSesion" action="/cerrarSesion">
+                  <div class="form-group">
+                    <button id="cerrarSesion" type="submit" class="btn btn-inverse">Cerrar sesi&oacute;n</button>
+                  </div>
+                </form>  
+              </li>
+            </ul>      
+        </div> <!-- end div class collapse -->   
+    </div> <!-- end content fluid -->
+  </nav>
+  <div class ="col-xs-12 col-sm-12 col-md-10 col-md-offset-1"> 
+    <div class="panel panel-default" >
       <!-- Default panel contents -->
-        <div class="panel-heading" style="font-family: Arial; font-size: 140%;background:#0B0B61;color:white;">
-          <%= dataAuditoria %>
-        </div>
-    </div>    
+      <div class="panel-heading" style="font-family: Arial; font-size: 140%;background:#0B0B61;color:white;">
+        <%= dataAuditoria %>
+      </div>
     
-    <br>
-<br>
-    
-    <div class="panel panel-default" style="width: 80%; position:relative;  left: 10%;" >
-      <!-- Default panel contents -->
-        <div class="panel-heading" style="font-family: Arial; font-size: 140%;text-align:center;background:#0B0B61;color:white;">Usuarios</div>
-        <div class="tabla">
+  </div>    
+  <div class="panel panel-default" >
+    <!-- Default panel contents -->
+    <div class="panel-heading" style="font-family: Arial; font-size: 140%;text-align:center;background:#0B0B61;color:white;">Usuarios</div>
+    <div class="panel-body">
+      <div class="table-responsive">
         <table class="table">
-           <tr>
-              <th>Nombre</th><th>Apellido</th><th>DNI</th><th>Email</th>
-           </tr>
-           <%     
+          <tr>
+            <th>Nombre</th><th>Apellido</th><th>DNI</th><th>Email</th>
+          </tr>
+          <%     
             for (var i = 0; i < data.length ; i++) {         
-            %>
+          %>
             <tbody>
-            <tr>
-              <td><%= data[i].nombre %></td>
-              <td><%= data[i].apellido %></td>
-              <td><%= data[i].dni %></td>
-              <td><%= data[i].email %></td>
-            </tr>  
+              <tr>
+                <td><%= data[i].nombre %></td>
+                <td><%= data[i].apellido %></td>
+                <td><%= data[i].dni %></td>
+                <td><%= data[i].email %></td>
+              </tr>  
             </tbody>
-           <% } %>  
-
+          <% } %>  
         </table> 
-        </div>
-    </div>        
-    
-
-    
-<br>
-<br>
-
-    <div class="panel panel-default" style="width: 80%; position:relative;  left: 10%;" >
-      <!-- Default panel contents -->
-        <div class="panel-heading" style="font-family: Arial; font-size: 140%;text-align:center;background:#0B0B61;color:white;">Ingreso de usuarios - Historico</div>
-        <div class="tabla">
-        <table class="table">
-           <tr>
-              <th>Email</th><th>Fecha entrada</th><th>Fecha salida</th>
-           </tr>
-
-           <%     
-            for (var i = (dataAuditoriaHistorico.length-1); i >= 0; i--)
-             {         
-            %>
-            <tr>
-              <td><%= dataAuditoriaHistorico[i].email %></td>
-              <td><%= dataAuditoriaHistorico[i].fechaEntrada %></td>
-              <td><%= dataAuditoriaHistorico[i].fechaSalida %></td>
-            </tr>    
-           <% } %>
-
-        </table>    
-        </div>  
+      </div>
     </div>
+  </div>        
+  <div class="panel panel-default" >
+    <div class="panel-heading" style="font-family: Arial; font-size: 140%;text-align:center;background:#0B0B61;color:white;">Ingreso de usuarios - Historico
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table">
+         <tr>
+            <th>Email</th><th>Fecha entrada</th><th>Fecha salida</th>
+         </tr>
+         <%     
+          for (var i = (dataAuditoriaHistorico.length-1); i >= 0; i--)
+           {         
+          %>
+          <tr>
+            <td><%= dataAuditoriaHistorico[i].email %></td>
+            <td><%= dataAuditoriaHistorico[i].fechaEntrada %></td>
+            <td><%= dataAuditoriaHistorico[i].fechaSalida %></td>
+          </tr>    
+         <% } %>
+      </table>     
+      </div>
+    </div>
+  </div>
+  </div>
+</div><!-- div del container -->
+
+
+  
+
+    
+
     
 
 

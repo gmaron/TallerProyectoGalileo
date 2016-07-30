@@ -1,304 +1,251 @@
 <html>
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./javascript/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
     <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap-theme.min.css">
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>    
-    <style type="text/css">
-        body {        
-            font-family: "Arial";
-            font-size: 140%;
-            background-image: url("img/fondo.jpg");
-            
-        }   
-        
-        .navbar-center
-        {
-            position: absolute;
-            text-align: center;
-            margin: auto;
-            margin-top:10px;
-            margin-left: 25%;
-        }
-        
-        
-        .navbar-center-music
-        {
-            position: absolute;
-            text-align: center;
-            margin: auto;
-            margin-top:10px;
-            margin-left: 37%;
-        }
-        
-        .music-label{
-            font-family: "Arial";
-            font-size: 140%;
-            color:white;
-            text-align: center;
-        }
- 
-         a:hover {
-          cursor:pointer;
-         }
-    </style>
+    <script src="./bootstrap/js/bootstrap.min.js"></script>    
+    <script type="text/javascript" src="./javascript/prototype.js"></script>
+    <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
+    <link rel="stylesheet" href="./css/perfilAdministrador.css">   
     
-    <script type="text/javascript" src="/javascript/prototype.js"></script>    
-        <% if (inside == "1" ) { %>
+    <!-- <% if (inside == "1" ) { %> -->
+      <script type="text/javascript" src="./javascript/spotifyManager.js"></script>
+    <!-- <% } %> -->
+    
+    
+    <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
 
-    <script>
-
-        function musicNext(){
-            new Ajax.Request('/musicSiguiente', {
-              method: 'post',
-              parameters: {pass:$('pass').serialize(true)}
-              });
-        }
-        
-        function musicBack(){
-            new Ajax.Request('/musicAnterior', {
-              method: 'post',
-              parameters: {pass:$('pass').serialize(true)}
-              });
-        }
-        
-        function musicResume(){
-            new Ajax.Request('/resumeMusic', {
-              method: 'post',
-              parameters: {pass:$('pass').serialize(true)}
-              });
-        }
-        
-        function musicPause(){
-            new Ajax.Request('/musicPause', {
-              method: 'post',
-              parameters: {pass:$('pass').serialize(true)}
-              });
-        }
-        
-       
-    </script>
-    <% } %>
-    
-    
-    
-    <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
-
-<title>Galileo</title>
+<title>Galileo - Administrador</title>
 </head>
 <body>
-    
-<nav class="navbar navbar-default" style="background:#0B0B61">
-  <div class="container-fluid">    
-    <div class="navbar-header" >
-         <a class="navbar-brand" style="color:white;">GALILEO</a>
-        <button type="button" class="navbar-toggle btn-primary" data-toggle="collapse"
-            data-target=".navbar-ex1-collapse">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-         <% if (inside == "1" ) { %>
-        <div class="navbar-center">
-           <input type='image' id="musicAnterior" onclick="musicBack();" src="/img/back.png" width="33" height="33"/> 
-           <input type='image' id="musicSiguiente" onclick="musicNext();" src="/img/foward.png" width="33" height="33"/> 
-           <input type='image' id="musicPause" src="/img/pause.png" onclick="musicPause();" width="33" height="33"/> 
-           <input type='image' id="resumeMusic" onclick="musicResume();" src="/img/play.png" width="33" height="33"/> 
-        </div>
-        <% } %>
-    </div>
-    <div class="collapse navbar-collapse navbar-ex1-collapse" > 
-        <form  name="historico" action="/historico" class="navbar-form navbar-left" method="post" role="tag">                 
-            <div class="form-group">
-                <button id="historico" type="submit" class="btn btn-inverse">Informacion</button>    
-            </div>            
-        </form>        
-        
-        <form name="perfil" action="/perfil" class="navbar-form navbar-left" method="post" role="tag">                
-            <div class="form-group">
+<div class="container">
+  <nav class="navbar navbar-default" role="navigation" style="background:#0B0B61">
+    <div class="container-fluid">    
+      <div class="navbar-header" >
+          <a class="navbar-brand" style="color:white;">GALILEO</a>
+          <!-- <% if (inside == "1" ) { %> -->
+          <div class="navbar-center-music col-xs-12 col-sm-12 col-md-6">
+             <input type='image' id="musicAnterior" onclick="spotifyManager.musicBack();" src="./img/back.png" width="33" height="33"/> 
+             <input type='image' id="musicSiguiente" onclick="spotifyManager.musicNext();" src="./img/foward.png" width="33" height="33"/> 
+             <input type='image' id="musicPause" src="./img/pause.png" onclick="spotifyManager.musicPause();" width="33" height="33"/> 
+             <input type='image' id="resumeMusic" onclick="spotifyManager.musicResume();" src="./img/play.png" width="33" height="33"/> 
+          </div>
+          <!-- <% } %> -->
+          <button type="button" class="navbar-toggle btn-primary" data-toggle="collapse"
+              data-target=".navbar-ex1-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+        </div> <!-- end navbar header -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse" >
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <form  name="historico" class="navbar-form" action="/historico" method="post" role="tag">
+                  <div class="form-group">
+                    <button id="historico" type="submit" class="btn btn-inverse">Informaci&oacute;n</button>    
+                  </div>            
+                </form>
+              </li>
+              <li>
+                <form name="perfil" class="navbar-form" action="/perfil" method="post" role="tag">
+                  <div class="form-group">
+                    <button id="perfil" type="submit" class="btn btn-inverse">Perfil</button>  
+                  </div> 
+                </form>
+              </li>
+              <li>
+                <form class="navbar-form" role="tag" method="post" name="cerrarSesion" action="/cerrarSesion">
+                  <div class="form-group">
+                    <button id="cerrarSesion" type="submit" class="btn btn-inverse">Cerrar sesi&oacute;n</button>
+                  </div>
+                </form>  
+              </li>
+            </ul>      
+        </div> <!-- end div class collapse -->   
+    </div> <!-- end content fluid -->
+  </nav>
+  
+  <div class ="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-heading" style="background:#0B0B61">
+        <h3 class="panel-title" style="text-align: center;color:white;">Usuario Galileo</h3>
+      </div>      
+      <div class="panel-body">
+        <form class="form-horizontal" role="form" name="form1" method="post" action="/modPerfil" target="_self" data-toggle="validator">
+          <div class="row">                
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>Nombre</h5>
             </div>
-            <button id="perfil" type="submit" class="btn btn-inverse">Perfil</button>    
+            <div class="col-xs-8 col-sm-8 col-md-9" >
+                <input type="text" class="form-control" name="nom" placeholder="Juan" value="<%= userName %>" required="true">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>Apellido</h5>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9" >
+              <input type="text" class="form-control" name="ape" placeholder="Lopez" value="<%= userSurname %>" required="true">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>DNI</h5>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+              <input class="form-control" name="userDNI" value="<%= userDNI %>" disabled>
+              <input type="hidden" name="userDNI"  value="<%= userDNI %>"></input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+                <h5>Email</h5>
+            </div>
+             <div class="col-xs-8 col-sm-8 col-md-9">
+                <input type="text" class="form-control" name="email" value="<%= userEmail %>" placeholder="email@dominio.com">
+                <label style="color:red"><%= errorMessageEmail %></label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+                <h5>Contrase&#241a</h5>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+              <input class="form-control" name="password" value="<%= userPass %>" disabled>
+              <input id="pass" type="hidden" name="pass"  value="<%= userPass %>"></input>
+            </div>
+          </div>                  
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>Temperatura seleccionada</h5>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+            <input name ="temp" type="range" min="18" max="40" value="<%= userTemp %>" step="1" onchange="showValueTemp(this.value)" />
+              <span id="rangeTemp"><%= userTemp %></span>
+              <script type="text/javascript">
+                function showValueTemp(newValue)
+                {
+                    document.getElementById("rangeTemp").innerHTML=newValue;
+                }
+              </script>
+            </div>
+          </div>                  
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>Intensidad de luz</h5>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+              <input name ="luz" type="range" min="0" max="100" value="<%= userLuz %>" step="5" onchange="showValueLuz(this.value)" />
 
-        </form>             
-        
-        <form class="navbar-form navbar-right" role="tag" method="post" name="cerrarSesion"  action="/cerrarSesion">
-            <div class="form-group">
+              <span style="display:block;margin:0 auto;" id="rangeLuz"><%= userLuz %></span>
+                <script type="text/javascript">
+                function showValueLuz(newValue)
+                {
+                    document.getElementById("rangeLuz").innerHTML=newValue;
+                }
+                </script>
             </div>
-            <button id="cerrarSesion" type="submit" class="btn btn-inverse">Cerrar sesión</button>    
-  		</form>
-    </div>    
-  </div>
-</nav>
-    
-<br>
-<br>   
-    <div class="container">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">      
-      <form class="form-horizontal" role="form" name="form1" method="post" action="/modPerfil" target="_self" data-toggle="validator">
-      <div class="panel panel-info">
-            <div class="panel-heading" style="background:#0B0B61">
-                <h3 class="panel-title" style="text-align: center;color:white;">Usuario Galileo</h3>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>Playlist 1</h5>
             </div>
-        <div class="panel-body">
-            <div class="row">                
-                <div class=".col-xs-12 .col-md-8 col-lg-12"> 
-                      <table class="table table-user-information">
-                        <tbody>
-                          <tr>
-                            <td>Nombre:</td>
-                            <td><input type="text" class="form-control" name="nom" placeholder="Juan" value="<%= userName %>" required="true"></td>
-                          </tr>
-                          <tr>
-                            <td>Apellido:</td>
-                            <td>
-    <input type="text" class="form-control" name="ape" placeholder="Lopez" value="<%= userSurname %>" required="true">    </td>
-                          </tr>
-                          <tr>
-                            <td>DNI:</td>
-                              <td><input type="hidden" name="userDNI"  value="<%= userDNI %>"></input>
-                                  <label type="text" name="dni" ><%= userDNI %></label></td>
-                          </tr> 
-                          <tr>
-                            <td>Email:</td>
-                            <td><input type="email" class="form-control" name="email" value=<%= userEmail %> placeholder="email@dominio.com">
-                                <br>
-                                <label style="color:red"><%= errorMessageEmail %></label>
-                            </td>
-                          </tr> 
-                          <tr>
-                            <td>Contraseña:</td>
-                              <td><input id="pass" type="hidden" name="pass"  value="<%= userPass %>"></input>
-                                  <label type="text" name="password" ><%= userPass %></label></td>
-                          </tr>     
-                          <tr>
-                            <td>Temperatura seleccionada:</td>
-                            <td>
-                             <input name ="temp" type="range" min="18" max="40" value=<%= userTemp %> step="1" onchange="showValueTemp(this.value)" />
-                                <span id="rangeTemp"><%= userTemp %></span>
-                                <script type="text/javascript">
-                                function showValueTemp(newValue)
-                                {
-                                    document.getElementById("rangeTemp").innerHTML=newValue;
-                                }
-                                </script>
-                            </td>
-                          </tr>                                           
-                          <tr>
-                            <td>Intensidad de luz:</td>
-                            <td>
-                             <input name ="luz" type="range" min="0" max="100" value=<%= userLuz %> step="5" onchange="showValueLuz(this.value)" />
-                                <span id="rangeLuz"><%= userLuz %></span>
-                                <script type="text/javascript">
-                                function showValueLuz(newValue)
-                                {
-                                    document.getElementById("rangeLuz").innerHTML=newValue;
-                                }
-                                </script>
-                            </td>                          
-                          </tr>
-          <tr>
-                                <td>Playlist 1:</td>
-                                <td>
-                                    <!-- Trigger the modal with a button -->
-                            <input type="radio" name="playlist" value="<%= indexPlaylist0 %>" <%= checkCero %>>
-                            <a class="menu_link" data-toggle="modal" data-target="#myModal0" style="cursor: pointer; "><%= namePlaylist0 %></a>
-                                </td>
-                            </tr>
-          <tr>
-                                <td>Playlist 2:</td>
-                                <td>
-                                    <!-- Trigger the modal with a button -->
-                            <input type="radio" name="playlist" value="<%= indexPlaylist1 %>" <%= checkUno %>>
-                            <a class="menu_link" data-toggle="modal" data-target="#myModal1" style="cursor: pointer; "><%= namePlaylist1 %></a>
-                                </td>
-                            </tr>
-          <tr>
-                                <td>Playlist 3:</td>
-                                <td>
-                                    <!-- Trigger the modal with a button -->
-                            <input type="radio" name="playlist" value="<%= indexPlaylist2 %>" <%= checkDos %>>
-                            <a class="menu_link" data-toggle="modal" data-target="#myModal2" style="cursor: pointer; "><%= namePlaylist2 %></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                      </table>
-                </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+                <input type="radio" name="playlist" value="<%= indexPlaylist0 %>" <%= checkCero %>
+                <a class="menu_link" data-toggle="modal" data-target="#myModal0" style="cursor: pointer; "><%= namePlaylist0 %></a>
             </div>
-        </div>
-        <div class="panel-footer">
-            <button name="commandButton" type="submit" class="btn btn-default" value="modPerfil"  style="background:#0B0B61;color:white;width:100%; margin-left: -1;">Modificar perfil</button>                        
-        </div>   
-      </div>
-    </form>
-    </div>    
-    </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>Playlist 2</h5>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+                <input type="radio" name="playlist" value="<%= indexPlaylist1 %>" <%= checkUno %>
+                <a class="menu_link" data-toggle="modal" data-target="#myModal1" style="cursor: pointer; "><%= namePlaylist1 %></a>
+            </div>
+          </div>       
+          <div class="row">
+             <div class="col-xs-4 col-sm-4 col-md-3 control-label">
+              <h5>Playlist 3</h5>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-md-9">
+                <input type="radio" name="playlist" value="<%= indexPlaylist2 %>" <%= checkDos %>
+                <a class="menu_link" data-toggle="modal" data-target="#myModal2" style="cursor: pointer; "><%= namePlaylist2 %></a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12" >
+               <button name="commandButton" type="submit" class="btn btn-default" value="modPerfil"  style="background:#0B0B61;color:white;width:100%; margin-left: -1;">Modificar perfil</button>
+            </div>
+          </div>       
+        </form>
+      </div><!-- class panel body -->
+    </div><!-- class panel defualt -->
+  </div> <!-- div del col xs - md -->
+</div> <!-- end of div class="container" -->
 
 <!-- Modal -->
-                      <div class="modal fade" id="myModal0" role="dialog">
-                        <div class="modal-dialog">
+<div class="modal fade" id="myModal0" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= namePlaylist0 %></h4>
+      </div>
+      <div class="modal-body">
+        <pre><%= cancionesPlaylist0 %></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-                          <!-- Modal content-->
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title"><%= namePlaylist0 %></h4>
-                            </div>
-                            <div class="modal-body">
-                              <pre><%= cancionesPlaylist0 %></pre>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-      
-                    </div>
-                    </div>
-      <!-- Modal -->
-                      <div class="modal fade" id="myModal1" role="dialog">
-                        <div class="modal-dialog">
 
-                          <!-- Modal content-->
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title"><%= namePlaylist1 %></h4>
-                            </div>
-                            <div class="modal-body">
-                              <pre><%= cancionesPlaylist1 %></pre>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-      
-                    </div>
-                    </div>
-      <!-- Modal -->
-                      <div class="modal fade" id="myModal2" role="dialog">
-                        <div class="modal-dialog">
-
-                          <!-- Modal content-->
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                              <h4 class="modal-title"><%= namePlaylist2 %></h4>
-                            </div>
-                            <div class="modal-body">
-                              <pre><%= cancionesPlaylist2 %></pre>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                          </div>
-      
-                    </div>
-                    </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal1" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= namePlaylist1 %></h4>
+      </div>
+      <div class="modal-body">
+        <pre><%= cancionesPlaylist1 %></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal2" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= namePlaylist2 %></h4>
+      </div>
+      <div class="modal-body">
+        <pre><%= cancionesPlaylist2 %></pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

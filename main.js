@@ -1367,9 +1367,9 @@ app.post("/resumeMusic",function(req,res){
 /*---------------------------Variables y funciones para la Base de Datos--------------*/
 
 
-var ipDataBase = '192.168.0.12';    // ip de la base de datos
-var usrDataBase = 'milton';         // nombre de usuario
-var passDataBase = 'milton';        // contrasena
+var ipDataBase = '192.168.0.8';    // ip de la base de datos
+var usrDataBase = 'root';         // nombre de usuario
+var passDataBase = '';        // contrasena
 var nameDataBase = 'tp2';           // nombre de la base de datos
 
 
@@ -2170,7 +2170,7 @@ function inciarIntelGalileo (){
                 res.sendfile( appDir + req.params[0]); 
             });
 
-            var port = process.env.PORT || 5000;
+            var port = process.env.PORT || 8000;
             app.listen(port, function() {
                console.log("Listening on " + port);
             });

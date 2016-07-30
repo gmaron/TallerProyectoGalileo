@@ -1,11 +1,11 @@
 {
   "project": {
-    "projectSettingsVersion": "1.2",
+    "projectSettingsVersion": "3.0.0",
     "creationData": {
       "projectTypeName": "com.intel.xdk.projecttype.iotapp",
       "src": "https://appcenter.html5tools-software.intel.com/api/v2.0/redirect/projectrenderers/release-2015-ww25/iotapp/templates-blank-iot/sample.zip",
       "projectGuid": "ece2cb7f-f52a-40e7-ab48-a36280c5ff82",
-      "lastModifiedDate": 1445619320181,
+      "lastModifiedDate": 1467687911552,
       "creationDate": 1445619320040
     },
     "sourceDirectory": "",
@@ -14,8 +14,24 @@
     "gameMetadata": {},
     "startFile": "main.js",
     "projectTags": [],
-    "projectFiles": {},
-    "projectDirectories": {},
+    "projectFiles": {
+      "xdk-publish-meta-data.json": {
+        "settings": {
+          "project": {
+            "XDK-not-deployed": "True"
+          }
+        }
+      }
+    },
+    "projectDirectories": {
+      "xdk": {
+        "settings": {
+          "project": {
+            "XDK-generated": "true"
+          }
+        }
+      }
+    },
     "libraries": [],
     "cordovaPlugins": [],
     "serviceMethods": [],
@@ -32,15 +48,19 @@
         "isActive_": true,
         "appName_": "Practica2",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": {
+          "mode": "legacy",
+          "network": [
+            "*"
+          ],
+          "intents": [],
+          "navigation": []
+        },
         "icons_": [],
         "splashes_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
+        "certificateId_": "",
         "appVersion_": "0.0.1",
         "appVersionCode_": "1",
         "crosswalkVersion_": "11",
@@ -58,15 +78,19 @@
         "isActive_": true,
         "appName_": "Practica2",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": {
+          "mode": "legacy",
+          "network": [
+            "*"
+          ],
+          "intents": [],
+          "navigation": []
+        },
         "icons_": [],
         "splashes_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
+        "certificateId_": "",
         "appVersion_": "0.0.1",
         "appVersionCode_": "1",
         "crosswalkVersion_": "11",
@@ -77,21 +101,25 @@
         "runtime_": "Cordova 3.x",
         "name_": "iOS",
         "preferences_": {
-          "ios-target": "6",
-          "ios-configuration": "adhoc"
+          "ios-configuration": "adhoc",
+          "deployment-target": "6"
         },
         "isActive_": true,
         "appName_": "Practica2",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": {
+          "mode": "legacy",
+          "network": [
+            "*"
+          ],
+          "intents": [],
+          "navigation": []
+        },
         "icons_": [],
         "splashes_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
+        "certificateId_": "",
         "appVersion_": "0.0.1",
         "cordovaCLIVersion_": "4.1.2",
         "iosProvs_": []
@@ -104,18 +132,23 @@
         "isActive_": true,
         "appName_": "Practica2",
         "appID_": "not.yet.specified",
-        "appAccess_": [
-          {
-            "origin": "*"
-          }
-        ],
+        "appAccess_": {
+          "mode": "legacy",
+          "network": [
+            "*"
+          ],
+          "intents": [],
+          "navigation": []
+        },
         "icons_": [],
         "splashes_": [],
         "addlPermissions_": "",
         "excludedLibraries_": "",
+        "certificateId_": "",
         "appVersion_": "0.0.0.1",
         "cordovaCLIVersion_": "4.1.2"
       }
-    }
+    },
+    "testDirectory": "test"
   }
 }
