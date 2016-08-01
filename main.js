@@ -515,7 +515,8 @@ app.post("/historico",function(req,res){
                     res.render(appDir + '/historicoAdministrador.ejs',{data:dataObject,
                                                                        dataAuditoriaHistorico:dataObjectAudHistorico,
                                                                        dataAuditoria:usuarioActual,
-                                                                       inside:inside});
+                                                                       inside:inside,
+                                                                       userPass : claveAdmin});
                 }
             });            
         }
