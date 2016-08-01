@@ -13,10 +13,10 @@
     <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
     <link rel="stylesheet" href="./css/perfilAdministrador.css">   
     
-    <!-- <% if (inside == "1" ) { %> -->
+    <% if (inside == "1" ) { %>
       <script type="text/javascript" src="./javascript/spotifyManager.js"></script>
-    <!-- <% } %> -->
-    
+    <% } %>
+  
     
     <link rel="shortcut icon" type="image/png" href="./img/favicon.png"/>
 
@@ -28,14 +28,14 @@
     <div class="container-fluid">    
       <div class="navbar-header" >
           <a class="navbar-brand" style="color:white;">GALILEO</a>
-          <!-- <% if (inside == "1" ) { %> -->
+          <% if (inside == "1" ) { %>
           <div class="navbar-center-music col-xs-12 col-sm-12 col-md-6">
              <input type='image' id="musicAnterior" onclick="spotifyManager.musicBack();" src="./img/back.png" width="33" height="33"/> 
              <input type='image' id="musicSiguiente" onclick="spotifyManager.musicNext();" src="./img/foward.png" width="33" height="33"/> 
              <input type='image' id="musicPause" src="./img/pause.png" onclick="spotifyManager.musicPause();" width="33" height="33"/> 
              <input type='image' id="resumeMusic" onclick="spotifyManager.musicResume();" src="./img/play.png" width="33" height="33"/> 
           </div>
-          <!-- <% } %> -->
+          <% } %>
           <button type="button" class="navbar-toggle btn-primary" data-toggle="collapse"
               data-target=".navbar-ex1-collapse">
                 <span class="icon-bar"></span>
